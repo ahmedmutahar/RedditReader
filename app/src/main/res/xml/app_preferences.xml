@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="@string/settings_subreddit_default"
+        android:key="@string/settings_subreddit_key"
+        android:summary="@string/settings_subreddit_summary"
+        android:title="@string/settings_subreddit_title" />
+    <ListPreference
+        android:defaultValue="@string/settings_refresh_default"
+        android:entries="@array/settings_refresh_values"
+        android:entryValues="@array/settings_refresh_values"
+        android:summary="@string/settings_refresh_summary"
+        android:key="@string/settings_refresh_key"
+        android:title="@string/settings_refresh_title" />
+</androidx.preference.PreferenceScreen>
