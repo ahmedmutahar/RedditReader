@@ -35,9 +35,9 @@ class FeedRefreshWorker(
 
     override suspend fun doWork() = try {
         Repository.updatePosts()
-        Payload(Result.SUCCESS)
+        Result.success()
     } catch (t: Throwable) {
-        Payload(Result.RETRY)
+        Result.retry()
     }
 
     class Delay(
@@ -68,7 +68,7 @@ class FeedRefreshWorker(
                                     ExistingPeriodicWorkPolicy.REPLACE,
                                     it
                             )
-                    Result.SUCCESS
+                    Result.success()
                 }
     }
 }
