@@ -8,7 +8,6 @@ import com.apps.bit.redditreader.arch.ArchFragment
 import com.apps.bit.redditreader.model.Entry
 import com.apps.bit.redditreader.util.asDateTimeString
 import com.apps.bit.redditreader.util.openURL
-import com.apps.bit.redditreader.util.setHtmlText
 import com.apps.bit.redditreader.viewmodel.PostViewModel
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.item_post.*
@@ -41,7 +40,9 @@ class PostFragment : ArchFragment<PostViewModel>() {
         author.text = post.author?.name
         category.text = post.category?.term
         title.text = post.title
-        post.content?.let(content::setHtmlText)
+        post.content?.let {
+            ww.loadDataWithBaseURL(null, it, "text/html", "UTF-8", null)
+        }
 
         author.setOnClickListener {
             post.author?.uri?.let(it.context::openURL)

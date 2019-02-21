@@ -26,15 +26,6 @@ fun ViewGroup.inflateView(@LayoutRes id: Int) = LayoutInflater
         .from(context)
         .inflate(id, this, false)
 
-@Suppress("DEPRECATION")
-fun TextView.setHtmlText(html: String) {
-    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT)
-    } else {
-        Html.fromHtml(html)
-    }
-}
-
 fun trace(vararg args: Any?): Unit = args
         .joinToString()
         .let {
