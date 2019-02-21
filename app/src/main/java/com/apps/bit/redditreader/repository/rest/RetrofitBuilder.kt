@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.apps.bit.redditreader.repository.rest
 
 import com.apps.bit.redditreader.BuildConfig
@@ -25,13 +27,13 @@ object RetrofitBuilder : HttpLoggingInterceptor.Logger {
             .addInterceptor(getLoggingInterceptor())
             .build()
 
-    private fun getLoggingInterceptor() = HttpLoggingInterceptor(this).apply {
-        level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.BASIC
-        }
-    }
+    private fun getLoggingInterceptor() = HttpLoggingInterceptor(this).setLevel(
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.BASIC
+            }
+    )
 
     override fun log(message: String) = trace(message)
 }

@@ -5,6 +5,7 @@ import com.apps.bit.redditreader.model.Minute
 import com.apps.bit.redditreader.repository.database.DatabaseApi
 import com.apps.bit.redditreader.repository.rest.RestApi
 import com.apps.bit.redditreader.repository.sharedPreferences.PreferencesApi
+import com.apps.bit.redditreader.util.tryCatching
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,9 +25,8 @@ object Repository : SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         CoroutineScope(Dispatchers.Default).launch {
-            try {
+            tryCatching {
                 updatePosts()
-            } catch (t: Throwable) {
             }
         }
     }
@@ -35,9 +35,9 @@ object Repository : SharedPreferences.OnSharedPreferenceChangeListener {
         val subreddit = preferencesImpl.subreddit
 
         val feedDeferred = if (subreddit.isEmpty()) {
-            restImpl.getPostsFromMain()
+            restImpl.getPostsFromMainAsync()
         } else {
-            restImpl.getPostsForSubreddit(subreddit)
+            restImpl.getPostsForSubredditAsync(subreddit)
         }
 
         feedDeferred

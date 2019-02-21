@@ -1,8 +1,8 @@
-package uk.co.dictate.dit3app.android.architecture
+package com.apps.bit.redditreader.arch
 
 import androidx.lifecycle.MutableLiveData
 
-open class DefaultedLiveData<T : Any>(defaultValue: T) : MutableLiveData<T>() {
+class DefaultedLiveData<T : Any>(defaultValue: T) : MutableLiveData<T>() {
 
     init {
         value = defaultValue

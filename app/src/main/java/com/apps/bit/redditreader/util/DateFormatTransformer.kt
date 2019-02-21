@@ -19,15 +19,14 @@ object DateFormatTransformer : Transform<Date> {
 
     override fun read(value: String): Date? {
         patterns.forEach {
-            try {
+            tryCatching {
                 return getDateFormat(it).parse(value)
-            } catch (t: Throwable) {
             }
         }
         return null
     }
 
-    fun getDateFormat(pattern: String) = SimpleDateFormat(pattern, Locale.ENGLISH)
-
     fun getDateTimeFormat() = SimpleDateFormat.getDateTimeInstance()
+
+    private fun getDateFormat(pattern: String) = SimpleDateFormat(pattern, Locale.ENGLISH)
 }

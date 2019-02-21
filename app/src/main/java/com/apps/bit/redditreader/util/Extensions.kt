@@ -26,10 +26,13 @@ fun ViewGroup.inflateView(@LayoutRes id: Int) = LayoutInflater
         .from(context)
         .inflate(id, this, false)
 
-fun TextView.setHtmlText(html: String) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-    text = Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT)
-} else {
-    text = Html.fromHtml(html)
+@Suppress("DEPRECATION")
+fun TextView.setHtmlText(html: String) {
+    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT)
+    } else {
+        Html.fromHtml(html)
+    }
 }
 
 fun trace(vararg args: Any?): Unit = args
@@ -76,3 +79,10 @@ fun <T> Box<T>.replace(values: List<T>) = store.runInTx {
 }
 
 val Date.asDateTimeString get() = DateFormatTransformer.getDateTimeFormat().format(this)
+
+inline fun tryCatching(action: () -> Unit) {
+    try {
+        action()
+    } catch (t: Throwable) {
+    }
+}

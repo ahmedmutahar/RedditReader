@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import uk.co.dictate.dit3app.android.architecture.DefaultedLiveData
+
 
 abstract class ArchViewModel : ViewModel() {
     val isLoading = DefaultedLiveData(false)

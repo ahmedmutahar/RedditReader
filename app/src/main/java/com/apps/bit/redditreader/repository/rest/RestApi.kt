@@ -11,10 +11,10 @@ interface RestApi {
     }
 
     @GET(RSS_SUFFIX)
-    fun getPostsFromMain(): Deferred<Feed>
+    fun getPostsFromMainAsync(): Deferred<Feed>
 
     @GET("r/{subreddit}/$RSS_SUFFIX")
-    fun getPostsForSubreddit(
+    fun getPostsForSubredditAsync(
             @Path("subreddit") subreddit: String
     ): Deferred<Feed>
 }
