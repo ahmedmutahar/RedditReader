@@ -12,7 +12,7 @@ import com.apps.bit.redditreader.util.inflateView
 import kotlinx.android.synthetic.main.item_post.view.*
 
 class PostsAdapter(
-        private val onClickListener: (Entry) -> Unit
+        private val onClickListener: (Entry, View) -> Unit
 ) : ListAdapter<Entry, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -31,13 +31,15 @@ class PostsAdapter(
             v.setOnClickListener(this)
         }
 
-        override fun onClick(v: View?) = onClickListener(getItem(adapterPosition))
+        override fun onClick(v: View?) = onClickListener(getItem(adapterPosition), itemView)
 
         fun bind(post: Entry) {
             date.text = post.updated?.asDateTimeString
             author.text = post.author?.name
             category.text = post.category?.term
             title.text = post.title
+
+            itemView.transitionName = post.id.toString()
         }
     }
 

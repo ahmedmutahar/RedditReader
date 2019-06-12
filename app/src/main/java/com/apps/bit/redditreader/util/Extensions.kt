@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
 import com.apps.bit.redditreader.BuildConfig
 import io.objectbox.Box
 import java.lang.reflect.ParameterizedType
@@ -56,3 +58,8 @@ fun <T> Box<T>.replace(values: List<T>) = store.runInTx {
 }
 
 val Date.asDateTimeString get() = DateFormatTransformer.getDateTimeFormat().format(this)
+
+inline fun bundle(withBudnle: Bundle.() -> Unit) = Bundle().apply(withBudnle)
+
+inline fun <reified T : Fragment> Context.instantiateFragment(withBudnle: Bundle.() -> Unit) =
+        Fragment.instantiate(this, T::class.java.name, bundle(withBudnle)) as T

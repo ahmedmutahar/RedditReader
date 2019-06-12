@@ -13,14 +13,6 @@ import kotlinx.android.synthetic.main.item_post.*
 
 class PostFragment : BaseFragment() {
 
-    companion object {
-        fun create(post: Entry) = PostFragment().apply {
-            val b = Bundle()
-            b.putSerializable(Entry::class.java.canonicalName, post)
-            arguments = b
-        }
-    }
-
     override val layoutRes get() = R.layout.fragment_post
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,5 +36,7 @@ class PostFragment : BaseFragment() {
         post.link?.href?.let { url ->
             button_open_in_browser.setOnClickListener { it.context.openURL(url) }
         }
+
+        header.transitionName = post.id.toString()
     }
 }

@@ -3,9 +3,11 @@ package com.apps.bit.redditreader.ui.feed
 import android.os.Bundle
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.transition.TransitionInflater
 import com.apps.bit.redditreader.R
 import com.apps.bit.redditreader.arch.ArchFragment
 import com.apps.bit.redditreader.model.Entry
+import com.apps.bit.redditreader.util.instantiateFragment
 import com.apps.bit.redditreader.viewmodel.FeedViewModel
 import kotlinx.android.synthetic.main.fragment_feed.*
 
@@ -43,10 +45,21 @@ class FeedFragment : ArchFragment<FeedViewModel>(), SwipeRefreshLayout.OnRefresh
     }
 
     fun onPostClick(post: Entry, view: View) {
-        fragmentManager!!
-                .beginTransaction()
-                .replace(R.id.fragment_container, PostFragment.create(post))
-                .addToBackStack(PostFragment::class.java.name)
-                .commit()
+        val ctx = context ?: return
+        ctx
+                .instantiateFragment<PostFragment> {
+                    putSerializable(Entry::class.java.canonicalName, post)
+                }
+                .apply {
+                    sharedElementEnterTransition = TransitionInflater.from(ctx).inflateTransition(android.R.transition.move)
+                }
+                .let {
+                    fragmentManager!!
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, it)
+                            .addSharedElement(view, view.transitionName)
+                            .addToBackStack(PostFragment::class.java.name)
+                            .commit()
+                }
     }
 }
