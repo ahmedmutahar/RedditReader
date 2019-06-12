@@ -41,14 +41,13 @@ class PostFragment : ArchFragment<PostViewModel>() {
         category.text = post.category?.term
         title.text = post.title
         post.content?.let {
-            ww.loadDataWithBaseURL(null, it, "text/html", "UTF-8", null)
+            content_view.loadDataWithBaseURL(null, it, "text/html", "UTF-8", null)
         }
-
-        author.setOnClickListener {
-            post.author?.uri?.let(it.context::openURL)
+        post.author?.uri?.let { url ->
+            author.setOnClickListener { it.context.openURL(url) }
         }
-        button_open_in_browser.setOnClickListener {
-            post.link?.href?.let(it.context::openURL)
+        post.link?.href?.let { url ->
+            button_open_in_browser.setOnClickListener { it.context.openURL(url) }
         }
     }
 }
