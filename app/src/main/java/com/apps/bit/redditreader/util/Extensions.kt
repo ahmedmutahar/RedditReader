@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.apps.bit.redditreader.BuildConfig
 import io.objectbox.Box
 import io.objectbox.android.ObjectBoxLiveData
 import java.lang.reflect.ParameterizedType
@@ -17,17 +18,17 @@ import java.util.*
 
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getGenericsClass() =
-    (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments.first() as Class<T>
+        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments.first() as Class<T>
 
 fun ViewGroup.inflateView(@LayoutRes id: Int) = LayoutInflater
-    .from(context)
-    .inflate(id, this, false)
+        .from(context)
+        .inflate(id, this, false)
 
-fun trace(vararg args: Any?): Unit = args
-    .joinToString()
-    .let {
-        Log.d("---", it)
-    }
+fun trace(arg: Any?, tag: String = "---") = arg
+        .takeIf { BuildConfig.DEBUG }
+        .toString()
+        .chunked(3000)
+        .forEach { Log.d(tag, it) }
 
 fun Context.openURL(url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

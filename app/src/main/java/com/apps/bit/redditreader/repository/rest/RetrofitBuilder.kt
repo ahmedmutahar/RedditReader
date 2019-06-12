@@ -4,6 +4,7 @@ package com.apps.bit.redditreader.repository.rest
 
 import com.apps.bit.redditreader.BuildConfig
 import com.apps.bit.redditreader.util.Converter
+import com.apps.bit.redditreader.util.trace
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -14,21 +15,22 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import retrofit2.create
 
 object RetrofitBuilder {
+
+    @JvmStatic
     fun build(apiUrl: String) = Retrofit
             .Builder()
             .baseUrl(apiUrl)
-            .client(createHttpClient())
+            .client(OkHttpClient
+                    .Builder()
+                    .addInterceptor(createLoggingInterceptor())
+                    .cookieJar(createCookieJar())
+                    .build())
             .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(Converter.xmlConverter))
             .build()
             .create<RestApi>()
 
-    private fun createHttpClient() = OkHttpClient
-            .Builder()
-            .cookieJar(getCookieJar())
-            .addInterceptor(getLoggingInterceptor())
-            .build()
-
-    private fun getLoggingInterceptor() = HttpLoggingInterceptor().setLevel(
+    @JvmStatic
+    private fun createLoggingInterceptor() = HttpLoggingInterceptor(createLogger()).setLevel(
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
             } else {
@@ -36,7 +38,13 @@ object RetrofitBuilder {
             }
     )
 
-    private fun getCookieJar() = object : CookieJar {
+    @JvmStatic
+    private fun createLogger() = HttpLoggingInterceptor.Logger {
+        trace(it, "HTTP")
+    }
+
+    @JvmStatic
+    private fun createCookieJar() = object : CookieJar {
         private val store = mutableMapOf<HttpUrl, Set<Cookie>>()
 
         override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
