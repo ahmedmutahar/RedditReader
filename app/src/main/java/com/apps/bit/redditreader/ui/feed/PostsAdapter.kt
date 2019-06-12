@@ -9,6 +9,7 @@ import com.apps.bit.redditreader.R
 import com.apps.bit.redditreader.model.Entry
 import com.apps.bit.redditreader.util.asDateTimeString
 import com.apps.bit.redditreader.util.inflateView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_post.view.*
 
 class PostsAdapter(
@@ -26,6 +27,7 @@ class PostsAdapter(
         private val author = v.author
         private val category = v.category
         private val title = v.title
+        private val image = v.image
 
         init {
             v.setOnClickListener(this)
@@ -38,6 +40,7 @@ class PostsAdapter(
             author.text = post.author?.name
             category.text = post.category?.term
             title.text = post.title
+            Picasso.get().load(post.imgUri).fit().centerCrop().placeholder(R.drawable.ic_image_black).into(image)
 
             itemView.transitionName = post.id.toString()
         }
