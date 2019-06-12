@@ -4,12 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -20,19 +17,17 @@ import java.util.*
 
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getGenericsClass() =
-        (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments.first() as Class<T>
+    (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments.first() as Class<T>
 
 fun ViewGroup.inflateView(@LayoutRes id: Int) = LayoutInflater
-        .from(context)
-        .inflate(id, this, false)
+    .from(context)
+    .inflate(id, this, false)
 
 fun trace(vararg args: Any?): Unit = args
-        .joinToString()
-        .let {
-            Log.d("---", it)
-        }
-
-fun Any?.trace() = trace(this)
+    .joinToString()
+    .let {
+        Log.d("---", it)
+    }
 
 fun Context.openURL(url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -57,12 +52,11 @@ operator fun SharedPreferences.set(key: String, value: Float) = edit().putFloat(
 operator fun SharedPreferences.set(key: String, value: Long) = edit().putLong(key, value).apply()
 operator fun SharedPreferences.set(key: String, value: Set<String>) = edit().putStringSet(key, value).apply()
 
-fun <T> ObjectBoxLiveData<T>.single(): LiveData<T> = MediatorLiveData<T>()
-        .also { mld ->
-            mld.addSource(this) {
-                mld.value = it.firstOrNull()
-            }
-        }
+fun <T> ObjectBoxLiveData<T>.single(): LiveData<T> = MediatorLiveData<T>().also { mld ->
+    mld.addSource(this) {
+        mld.value = it.firstOrNull()
+    }
+}
 
 fun <T> Box<T>.replace(values: List<T>) = store.runInTx {
     removeAll()
@@ -70,10 +64,3 @@ fun <T> Box<T>.replace(values: List<T>) = store.runInTx {
 }
 
 val Date.asDateTimeString get() = DateFormatTransformer.getDateTimeFormat().format(this)
-
-inline fun tryCatching(action: () -> Unit) {
-    try {
-        action()
-    } catch (t: Throwable) {
-    }
-}

@@ -19,9 +19,9 @@ object DateFormatTransformer : Transform<Date> {
 
     override fun read(value: String): Date? {
         patterns.forEach {
-            tryCatching {
+            try {
                 return getDateFormat(it).parse(value)
-            }
+            } catch (t: Throwable){}
         }
         return null
     }

@@ -1,7 +1,6 @@
 package com.apps.bit.redditreader.repository.rest
 
 import com.apps.bit.redditreader.model.Feed
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -11,10 +10,10 @@ interface RestApi {
     }
 
     @GET(RSS_SUFFIX)
-    fun getPostsFromMainAsync(): Deferred<Feed>
+    suspend fun getPostsFromMainAsync(): Feed
 
     @GET("r/{subreddit}/$RSS_SUFFIX")
-    fun getPostsForSubredditAsync(
+    suspend fun getPostsForSubredditAsync(
             @Path("subreddit") subreddit: String
-    ): Deferred<Feed>
+    ): Feed
 }

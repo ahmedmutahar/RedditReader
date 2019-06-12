@@ -5,7 +5,6 @@ package com.apps.bit.redditreader.repository.rest
 import com.apps.bit.redditreader.BuildConfig
 import com.apps.bit.redditreader.util.Converter
 import com.apps.bit.redditreader.util.trace
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,7 +16,6 @@ object RetrofitBuilder : HttpLoggingInterceptor.Logger {
             .Builder()
             .baseUrl(apiUrl)
             .client(createHttpClient())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(Converter.xmlConverter))
             .build()
             .create<RestApi>()
