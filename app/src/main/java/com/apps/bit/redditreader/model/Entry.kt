@@ -1,5 +1,7 @@
 package com.apps.bit.redditreader.model
 
+import android.net.Uri
+import com.apps.bit.redditreader.util.findUrls
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -35,4 +37,19 @@ data class Entry(
         @field: Element
         @field: Convert(converter = Link.LinkConverter::class, dbType = ByteArray::class)
         var link: Link? = null
-) : Serializable
+) : Serializable {
+
+    val imgUri: Uri?
+        get() = content
+                ?.findUrls()
+                ?.firstOrNull { uri ->
+                    val lastPathSegment = uri.lastPathSegment ?: return@firstOrNull false
+                    val authority = uri.authority ?: return@firstOrNull false
+                    !authority.contains("thumbs")
+                            && (lastPathSegment.contains("jpg", true)
+                            || lastPathSegment.contains("jpeg", true)
+                            || lastPathSegment.contains("png", true)
+                            || lastPathSegment.contains("webp", true)
+                            || lastPathSegment.contains("bmp", true))
+                }
+}

@@ -10,12 +10,24 @@ import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.apps.bit.redditreader.BuildConfig
+import com.squareup.picasso.Callback
+import com.squareup.picasso.RequestCreator
 import io.objectbox.Box
 import java.lang.reflect.ParameterizedType
 import java.util.*
+import java.util.regex.Pattern
+import java.util.regex.Pattern.DOTALL
+
+
+private val urlPattern = Pattern.compile(
+        "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+                + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+                + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
+        Pattern.CASE_INSENSITIVE or Pattern.MULTILINE or DOTALL)
 
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getGenericsClass() =
@@ -71,3 +83,21 @@ fun String.fromHtml() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 } else {
     Html.fromHtml(this)
 }
+
+fun String.findUrls(): List<Uri> {
+    val out = mutableListOf<Uri>()
+    val matcher = urlPattern.matcher(this)
+    while (matcher.find()) {
+        try {
+            out.add(Uri.parse(substring(matcher.start(1), matcher.end())))
+        } catch (ignored: Throwable) {
+
+        }
+    }
+    return out
+}
+
+inline fun RequestCreator.into(view: ImageView, crossinline cb: (Exception?) -> Unit) = into(view, object : Callback {
+    override fun onSuccess() = cb(null)
+    override fun onError(e: Exception) = cb(e)
+})

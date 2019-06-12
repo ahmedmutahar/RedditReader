@@ -8,7 +8,9 @@ import com.apps.bit.redditreader.arch.BaseFragment
 import com.apps.bit.redditreader.model.Entry
 import com.apps.bit.redditreader.util.asDateTimeString
 import com.apps.bit.redditreader.util.fromHtml
+import com.apps.bit.redditreader.util.into
 import com.apps.bit.redditreader.util.openURL
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.item_post.*
 
@@ -19,23 +21,32 @@ class PostFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val post = arguments!!.getSerializable(Entry::class.java.canonicalName) as Entry
 
-        date.text = post.updated?.asDateTimeString
-
-        author.text = post.author?.name
-        author.setTextColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
-
-        category.text = post.category?.term
-
-        title.text = post.title
-
+        post.author?.let {
+            author.text = it.name
+            author.setTextColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+            it.uri?.let { uri ->
+                author.setOnClickListener { v -> v.context.openURL(uri) }
+            }
+        }
+        post.category?.let {
+            category.text = it.term
+        }
+        post.title?.let {
+            title.text = it
+        }
+        post.updated?.let {
+            date.text = it.asDateTimeString
+        }
         post.content?.let {
             content_view.text = it.fromHtml()
         }
-        post.author?.uri?.let { url ->
-            author.setOnClickListener { it.context.openURL(url) }
+        post.link?.href?.let {
+            button_open_in_browser.setOnClickListener { v -> v.context.openURL(it) }
         }
-        post.link?.href?.let { url ->
-            button_open_in_browser.setOnClickListener { it.context.openURL(url) }
+        post.imgUri?.let {
+            Picasso.get().load(it).into(image) {
+                progress.visibility = View.GONE
+            }
         }
 
         header.transitionName = post.id.toString()
