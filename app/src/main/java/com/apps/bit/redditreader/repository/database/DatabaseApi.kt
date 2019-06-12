@@ -9,6 +9,4 @@ interface DatabaseApi {
     fun setPosts(posts: List<Entry>): Job
 
     fun getPostsObservable(): LiveData<List<Entry>>
-
-    fun getPostObservable(postId: String): LiveData<Entry>
 }

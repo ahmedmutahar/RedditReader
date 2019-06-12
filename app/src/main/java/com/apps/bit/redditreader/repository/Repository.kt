@@ -44,7 +44,5 @@ object Repository : SharedPreferences.OnSharedPreferenceChangeListener {
 
     fun getPostsObservable() = dbImpl.getPostsObservable()
 
-    fun getPostObservable(postId: String) = dbImpl.getPostObservable(postId)
-
     fun getUpdateInterval() = Minute(preferencesImpl.updateInterval)
 }

@@ -8,11 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import com.apps.bit.redditreader.BuildConfig
 import io.objectbox.Box
-import io.objectbox.android.ObjectBoxLiveData
 import java.lang.reflect.ParameterizedType
 import java.util.*
 
@@ -52,12 +49,6 @@ operator fun SharedPreferences.set(key: String, value: Boolean) = edit().putBool
 operator fun SharedPreferences.set(key: String, value: Float) = edit().putFloat(key, value).apply()
 operator fun SharedPreferences.set(key: String, value: Long) = edit().putLong(key, value).apply()
 operator fun SharedPreferences.set(key: String, value: Set<String>) = edit().putStringSet(key, value).apply()
-
-fun <T> ObjectBoxLiveData<T>.single(): LiveData<T> = MediatorLiveData<T>().also { mld ->
-    mld.addSource(this) {
-        mld.value = it.firstOrNull()
-    }
-}
 
 fun <T> Box<T>.replace(values: List<T>) = store.runInTx {
     removeAll()

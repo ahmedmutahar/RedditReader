@@ -4,6 +4,7 @@ import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import org.simpleframework.xml.Element
+import java.io.Serializable
 import java.util.*
 
 @Entity
@@ -34,4 +35,4 @@ data class Entry(
         @field: Element
         @field: Convert(converter = Link.LinkConverter::class, dbType = ByteArray::class)
         var link: Link? = null
-)
+) : Serializable

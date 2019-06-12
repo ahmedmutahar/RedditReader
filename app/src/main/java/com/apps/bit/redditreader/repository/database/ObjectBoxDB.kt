@@ -4,7 +4,6 @@ import com.apps.bit.redditreader.model.Entry
 import com.apps.bit.redditreader.model.Entry_
 import com.apps.bit.redditreader.model.MyObjectBox
 import com.apps.bit.redditreader.util.replace
-import com.apps.bit.redditreader.util.single
 import io.objectbox.android.ObjectBoxLiveData
 import io.objectbox.query.QueryBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -35,13 +34,4 @@ class ObjectBoxDB(baseDir: File) : DatabaseApi, CoroutineScope {
                     QueryBuilder.DESCENDING)
             .build()
             .let(::ObjectBoxLiveData)
-
-    override fun getPostObservable(postId: String) = postsBox
-            .query()
-            .equal(
-                    Entry_.postId,
-                    postId)
-            .build()
-            .let(::ObjectBoxLiveData)
-            .single()
 }

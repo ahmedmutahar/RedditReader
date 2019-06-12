@@ -16,7 +16,6 @@ import retrofit2.create
 
 object RetrofitBuilder {
 
-    @JvmStatic
     fun build(apiUrl: String) = Retrofit
             .Builder()
             .baseUrl(apiUrl)
@@ -29,7 +28,6 @@ object RetrofitBuilder {
             .build()
             .create<RestApi>()
 
-    @JvmStatic
     private fun createLoggingInterceptor() = HttpLoggingInterceptor(createLogger()).setLevel(
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
@@ -38,12 +36,10 @@ object RetrofitBuilder {
             }
     )
 
-    @JvmStatic
     private fun createLogger() = HttpLoggingInterceptor.Logger {
         trace(it, "HTTP")
     }
 
-    @JvmStatic
     private fun createCookieJar() = object : CookieJar {
         private val store = mutableMapOf<HttpUrl, Set<Cookie>>()
 
