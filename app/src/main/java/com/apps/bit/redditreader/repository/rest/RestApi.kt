@@ -10,10 +10,10 @@ interface RestApi {
     }
 
     @GET(RSS_SUFFIX)
-    suspend fun getPostsFromMainAsync(): Feed
+    suspend fun getPostsFromMain(): Feed
 
     @GET("r/{subreddit}/$RSS_SUFFIX")
-    suspend fun getPostsForSubredditAsync(
+    suspend fun getPostsForSubreddit(
             @Path("subreddit") subreddit: String
     ): Feed
 }

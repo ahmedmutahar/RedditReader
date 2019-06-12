@@ -33,13 +33,13 @@ object Repository : SharedPreferences.OnSharedPreferenceChangeListener {
     suspend fun updatePosts() {
         val subreddit = preferencesImpl.subreddit
 
-        val feed = if (subreddit.isEmpty()) {
-            restImpl.getPostsFromMainAsync()
+        val feedEntries = if (subreddit.isEmpty()) {
+            restImpl.getPostsFromMain()
         } else {
-            restImpl.getPostsForSubredditAsync(subreddit)
-        }
+            restImpl.getPostsForSubreddit(subreddit)
+        }.entry ?: return
 
-        feed.entry?.let { dbImpl.setPosts(it).join() }
+        dbImpl.setPosts(feedEntries).join()
     }
 
     fun getPostsObservable() = dbImpl.getPostsObservable()

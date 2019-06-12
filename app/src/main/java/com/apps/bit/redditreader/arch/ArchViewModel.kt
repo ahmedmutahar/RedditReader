@@ -1,22 +1,19 @@
 package com.apps.bit.redditreader.arch
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 
-abstract class ArchViewModel : ViewModel() {
+abstract class ArchViewModel : ViewModel(), CoroutineScope {
     val isLoading = DefaultedLiveData(false)
-    val errorAction = ActionLiveData<Throwable>()
-
-    val defaultCoroutineScope = CoroutineScope(Dispatchers.Main)
-
-    init {
-        errorAction.observeForever { it?.printStackTrace() }
+    val errorAction = ActionLiveData<Throwable>().apply {
+        observeForever(Throwable::printStackTrace)
     }
 
-    inline fun withLoadingAndError(crossinline action: suspend () -> Unit) = defaultCoroutineScope.launch {
+    override val coroutineContext = SupervisorJob() + Dispatchers.Main
+
+    protected inline fun withLoadingAndError(crossinline action: suspend () -> Unit) = launch {
         try {
             isLoading.value = true
             action()
@@ -25,5 +22,9 @@ abstract class ArchViewModel : ViewModel() {
         } finally {
             isLoading.value = false
         }
+    }
+
+    override fun onCleared() {
+        coroutineContext.cancel()
     }
 }
