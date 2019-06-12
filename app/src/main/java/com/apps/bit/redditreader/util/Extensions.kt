@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -63,3 +65,9 @@ inline fun bundle(withBudnle: Bundle.() -> Unit) = Bundle().apply(withBudnle)
 
 inline fun <reified T : Fragment> Context.instantiateFragment(withBudnle: Bundle.() -> Unit) =
         Fragment.instantiate(this, T::class.java.name, bundle(withBudnle)) as T
+
+fun String.fromHtml() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT)
+} else {
+    Html.fromHtml(this)
+}

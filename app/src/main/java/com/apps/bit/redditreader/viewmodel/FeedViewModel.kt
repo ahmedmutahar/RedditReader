@@ -7,6 +7,10 @@ class FeedViewModel : ArchViewModel() {
 
     val posts = Repository.getPostsObservable()
 
+    init {
+        getPosts()
+    }
+
     fun getPosts() = withLoadingAndError {
         Repository.updatePosts()
     }

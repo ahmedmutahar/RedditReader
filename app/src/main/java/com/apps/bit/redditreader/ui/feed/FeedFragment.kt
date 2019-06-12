@@ -27,11 +27,6 @@ class FeedFragment : ArchFragment<FeedViewModel>(), SwipeRefreshLayout.OnRefresh
         viewModel.posts.observe(::onPostsUpdated)
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.getPosts()
-    }
-
     override fun onLoadingStatusUpdate(isLoading: Boolean) {
         feed_swipe_refresh.isRefreshing = isLoading
     }

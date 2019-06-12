@@ -7,6 +7,7 @@ import com.apps.bit.redditreader.R
 import com.apps.bit.redditreader.arch.BaseFragment
 import com.apps.bit.redditreader.model.Entry
 import com.apps.bit.redditreader.util.asDateTimeString
+import com.apps.bit.redditreader.util.fromHtml
 import com.apps.bit.redditreader.util.openURL
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.item_post.*
@@ -28,7 +29,7 @@ class PostFragment : BaseFragment() {
         title.text = post.title
 
         post.content?.let {
-            content_view.loadDataWithBaseURL(null, it, "text/html", "UTF-8", null)
+            content_view.text = it.fromHtml()
         }
         post.author?.uri?.let { url ->
             author.setOnClickListener { it.context.openURL(url) }
