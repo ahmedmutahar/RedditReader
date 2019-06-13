@@ -11,6 +11,7 @@ import com.apps.bit.redditreader.util.asDateTimeString
 import com.apps.bit.redditreader.util.inflateView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.android.synthetic.main.item_post_header.view.*
 
 class PostsAdapter(
         private val onClickListener: (Entry, View) -> Unit
@@ -28,12 +29,13 @@ class PostsAdapter(
         private val category = v.category
         private val title = v.title
         private val image = v.image
+        private val postHeader = v.post_header
 
         init {
             v.setOnClickListener(this)
         }
 
-        override fun onClick(v: View?) = onClickListener(getItem(adapterPosition), itemView)
+        override fun onClick(v: View?) = onClickListener(getItem(adapterPosition), postHeader)
 
         fun bind(post: Entry) {
             date.text = post.updated?.asDateTimeString
@@ -42,7 +44,7 @@ class PostsAdapter(
             title.text = post.title
             Picasso.get().load(post.imgUri).fit().centerCrop().placeholder(R.drawable.ic_image_black).into(image)
 
-            itemView.transitionName = post.id.toString()
+            postHeader.transitionName = post.id.toString()
         }
     }
 

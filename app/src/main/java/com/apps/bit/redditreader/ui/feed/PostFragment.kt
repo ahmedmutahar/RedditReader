@@ -12,6 +12,7 @@ import com.apps.bit.redditreader.util.into
 import com.apps.bit.redditreader.util.openURL
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_post.*
+import kotlinx.android.synthetic.main.item_post_header.*
 
 class PostFragment : BaseFragment() {
 
@@ -41,9 +42,11 @@ class PostFragment : BaseFragment() {
         }
         post.imgUri?.let {
             progress.visibility = View.VISIBLE
-            Picasso.get().load(it).into(image) {
+            Picasso.get().load(it).into(image) { e ->
                 progress.visibility = View.GONE
             }
         }
+
+        post_header.transitionName = post.id.toString()
     }
 }
