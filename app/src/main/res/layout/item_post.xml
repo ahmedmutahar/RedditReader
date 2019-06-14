@@ -13,15 +13,15 @@
         tools:src="@drawable/ic_image_black" />
 
     <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:alpha="0.3"
-            android:background="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="@id/post_header"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@id/post_header"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
-            android:id="@+id/post_header"
-            layout="@layout/item_post_header"/>
+        android:id="@+id/post_header"
+        layout="@layout/item_post_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
