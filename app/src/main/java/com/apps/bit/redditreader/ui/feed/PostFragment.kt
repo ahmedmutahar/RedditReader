@@ -3,6 +3,7 @@ package com.apps.bit.redditreader.ui.feed
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.apps.bit.redditreader.App.Companion.picassoInstance
 import com.apps.bit.redditreader.R
 import com.apps.bit.redditreader.arch.BaseFragment
 import com.apps.bit.redditreader.model.Entry
@@ -10,7 +11,6 @@ import com.apps.bit.redditreader.util.asDateTimeString
 import com.apps.bit.redditreader.util.fromHtml
 import com.apps.bit.redditreader.util.into
 import com.apps.bit.redditreader.util.openURL
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.item_post_header.*
 
@@ -42,7 +42,7 @@ class PostFragment : BaseFragment() {
         }
         post.imgUri?.let {
             progress.visibility = View.VISIBLE
-            Picasso.get().load(it).into(image) { e ->
+            picassoInstance.load(it).into(image) {
                 progress.visibility = View.GONE
             }
         }

@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.apps.bit.redditreader.App.Companion.picassoInstance
 import com.apps.bit.redditreader.R
 import com.apps.bit.redditreader.model.Entry
 import com.apps.bit.redditreader.util.asDateTimeString
 import com.apps.bit.redditreader.util.inflateView
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_header.view.*
 
@@ -42,7 +42,7 @@ class PostsAdapter(
             author.text = post.author?.name
             category.text = post.category?.term
             title.text = post.title
-            Picasso.get().load(post.imgUri).fit().centerCrop().placeholder(R.drawable.ic_image_black).into(image)
+            picassoInstance.load(post.imgUri).fit().centerCrop().placeholder(R.drawable.ic_image_black).into(image)
 
             postHeader.transitionName = post.id.toString()
         }
