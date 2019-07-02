@@ -40,7 +40,7 @@ fun ViewGroup.inflateView(@LayoutRes id: Int) = LayoutInflater
 fun trace(arg: Any?, tag: String = "---") = arg
         .takeIf { BuildConfig.DEBUG }
         .toString()
-        .chunked(3000)
+    .chunked(1000)
         .forEach { Log.d(tag, it) }
 
 fun Context.openURL(url: String) {

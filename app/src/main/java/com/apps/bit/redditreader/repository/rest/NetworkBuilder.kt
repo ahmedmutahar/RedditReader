@@ -43,8 +43,10 @@ object NetworkBuilder {
         }
     )
 
-    private fun createLogger() = HttpLoggingInterceptor.Logger {
-        trace(it, "HTTP")
+    private fun createLogger() = object : HttpLoggingInterceptor.Logger {
+        override fun log(message: String) {
+            trace(message, "HTTP")
+        }
     }
 
     private fun createCookieJar() = object : CookieJar {
